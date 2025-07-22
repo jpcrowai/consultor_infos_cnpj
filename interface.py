@@ -100,7 +100,7 @@ def interface():
                     dados = Basic.consultar_cnpj(cnpj)
                     progress = int((count + 1) / len(cnpjs) * 100)
                     progress_bar.progress(progress)
-                    status_text.text(f"Consultando {i + 1} de {len(cnpjs)} ({progress}%)")
+                    status_text.text(f"Consultando {count + 1} de {len(cnpjs)} ({progress}%)")
                     if 'erro' not in dados:
                         resultados.append({
                             "CNPJ": cnpj,

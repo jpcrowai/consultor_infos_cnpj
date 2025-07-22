@@ -1,9 +1,4 @@
-from env import email_outlook, senha_outlook
 import requests
-import smtplib
-from email.message import EmailMessage
-import ssl
-import os
 
 class Basic:
     def consultar_cnpj(cnpj):
@@ -17,35 +12,4 @@ class Basic:
                 return {"erro": f"Erro {response.status_code}"}
         except Exception as e:
             return {"erro": str(e)}
-
-
-    def enviar_email_outlook(destinatario, assunto, corpo, nome_arquivo, arquivo_buffer=None):
-        remetente = email_outlook
-        senha = senha_outlook
-
-        msg = EmailMessage()
-        msg["Subject"] = assunto
-        msg["From"] = remetente
-        msg["To"] = destinatario
-        msg.set_content(corpo)
-
-        if arquivo_buffer:
-            arquivo_buffer.seek(0)
-            conteudo = arquivo_buffer.read()
-            if isinstance(conteudo, str):
-                conteudo = conteudo.encode("utf-8")
-
-            msg.add_attachment(conteudo, maintype="text", subtype="csv", filename=nome_arquivo)
-
-        try:
-            context = ssl.create_default_context()
-            with smtplib.SMTP("smtp.office365.com", 587) as smtp:
-                smtp.starttls(context=context)
-                smtp.login(remetente, senha)
-                smtp.send_message(msg)
-            print("E-mail enviado com sucesso.")
-        except Exception as e:
-            print(f"Erro ao enviar e-mail: {e}")
-
-
 

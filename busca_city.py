@@ -35,7 +35,7 @@ class BrasilIO:
         resultados = []
         pagina = 1
         while True:
-            print(f"🔎 Coletando página {pagina}...")
+            print(f"Coletando página {pagina}...")
             query = {"search": search, "uf": uf, "page": pagina}
             response = self.api_request(path, query)
 
@@ -55,7 +55,7 @@ def salvar_em_csv(dados, nome_arquivo="empresas.csv"):
         writer.writeheader()
         writer.writerows(dados)
 
-    print(f"✅ Arquivo salvo com sucesso: {nome_arquivo}")
+    print(f"Arquivo salvo com sucesso: {nome_arquivo}")
 
 
 

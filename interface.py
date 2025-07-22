@@ -33,9 +33,8 @@ def interface():
     elif modo == "Buscar por Cidade e UF":
         cidade = st.text_input("Cidade").lower()
         uf = st.text_input("UF").upper()
-        email_destino = st.text_input("📧 E-mail para envio (opcional)")
 
-        if st.button("🔎 Buscar e Consultar Empresas"):
+        if st.button("Buscar e Consultar Empresas"):
             if not cidade or not uf:
                 st.warning("Preencha cidade e UF corretamente.")
             else:
@@ -50,10 +49,10 @@ def interface():
                     df_cnpjs = pd.DataFrame(empresas)
                     cnpjs = df_cnpjs.iloc[:, 0].astype(str).tolist()
 
-                    st.info(f"🔍 {len(cnpjs)} CNPJs encontrados. Iniciando consulta detalhada...")
+                    st.info(f"{len(cnpjs)} CNPJs encontrados. Iniciando consulta detalhada...")
                     with st.spinner("Consultando dados detalhados..."):
                         for cnpj in cnpjs:
-                            time.sleep(1)
+                            time.sleep(2)
                             dados = Basic.consultar_cnpj(cnpj)
                             if 'erro' not in dados:
                                 resultados.append({
@@ -69,27 +68,17 @@ def interface():
                                 resultados.append({"CNPJ": cnpj, "Erro": dados['erro']})
 
                     df_resultado = pd.DataFrame(resultados)
-                    st.subheader("📋 Resultado")
+                    st.subheader("Resultado")
                     st.dataframe(df_resultado)
 
                     buffer = io.StringIO()
                     df_resultado.to_csv(buffer, index=False)
                     buffer.seek(0)
+                    st.download_button("Baixar CSV", data=buffer.getvalue(), file_name="consulta_cnpjs.csv", mime="text/csv")
 
-                    if email_destino:
-                        try:
-                            Basic.enviar_email(email_destino, buffer)
-                            st.success(f"Dados enviados para {email_destino} com sucesso!")
-                        except Exception as e:
-                            st.error(f"Erro ao enviar e-mail: {e}")
-                    else:
-                        st.download_button("Baixar CSV", data=buffer.getvalue(), file_name="consulta_cnpjs.csv", mime="text/csv")
-
-    # Parte comum para Upload ou Digitação manual
     if modo in ["Upload de Excel", "Digitar CNPJs"]:
-        email_destino = st.text_input("E-mail para envio (opcional)")
 
-        if st.button("🔍 Consultar CNPJs"):
+        if st.button("Consultar CNPJs"):
             if not cnpjs:
                 st.warning("Insira ao menos um CNPJ válido.")
                 return
@@ -112,18 +101,9 @@ def interface():
                         resultados.append({"CNPJ": cnpj, "Erro": dados['erro']})
 
             df_resultado = pd.DataFrame(resultados)
-            st.subheader("📋 Resultado")
+            st.subheader("Resultado")
             st.dataframe(df_resultado)
 
             buffer = io.StringIO()
             df_resultado.to_csv(buffer, index=False)
             buffer.seek(0)
-
-            if email_destino:
-                try:
-                    Basic.enviar_email(email_destino, buffer)
-                    st.success(f"Dados enviados para {email_destino} com sucesso!")
-                except Exception as e:
-                    st.error(f"Erro ao enviar e-mail: {e}")
-            else:
-                st.download_button("Baixar CSV", data=buffer.getvalue(), file_name="consulta_cnpjs.csv", mime="text/csv")

@@ -16,7 +16,7 @@ Aplicação web interativa desenvolvida em **Python** com **Streamlit**, que per
   - E-mail
   - Telefone
   - Atividade econômica principal
-- 📤 **Exportação dos Resultados**: Baixe os dados em `.csv` ou envie diretamente por e-mail via Outlook.
+- 📤 **Exportação dos Resultados**: Baixe os dados em `.csv`.
 
 ---
 
@@ -24,7 +24,7 @@ Aplicação web interativa desenvolvida em **Python** com **Streamlit**, que per
 
 - [Streamlit](https://streamlit.io/) — Interface web interativa
 - [Pandas](https://pandas.pydata.org/) — Manipulação de dados
-- `smtplib`, `ssl`, `email.message` — Envio de e-mails
+- `smtplib`, `ssl` — Envio de e-mails
 - [Brasil.IO API](https://brasil.io/) — Consulta de empresas por cidade e UF
 - [ReceitaWS API](https://receitaws.com.br/) (ou similar) — Consulta de CNPJ
 
@@ -44,12 +44,7 @@ Use um ambiente virtual e instale as bibliotecas:
 ```bash
 pip install -r requirements.txt
 ```
-3. Configure as variáveis de ambiente (opcional)
-Crie um arquivo .env com:
-
-EMAIL_OUTLOOK=seu_email@outlook.com
-SENHA_OUTLOOK=sua_senha_ou_senha_de_aplicativo
-4. Execute a aplicação
+3. Execute a aplicação
 ```bash
 streamlit run main.py
 ```

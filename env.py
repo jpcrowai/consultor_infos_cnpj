@@ -1,3 +1,2 @@
-email_outlook=seu_email@outlook.com
-senha_outlook=sua_senha_ou_senha_de_aplicativo
+
 token = "81fff96fede7bab1e3834669b35431f3faa3b647"

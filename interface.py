@@ -52,7 +52,7 @@ def interface():
                     st.info(f"{len(cnpjs)} CNPJs encontrados. Iniciando consulta detalhada...")
                     with st.spinner("Consultando dados detalhados..."):
                         for cnpj in cnpjs:
-                            time.sleep(2)
+                            time.sleep(5)
                             dados = Basic.consultar_cnpj(cnpj)
                             if 'erro' not in dados:
                                 resultados.append({
@@ -85,7 +85,7 @@ def interface():
 
             with st.spinner("Consultando..."):
                 for cnpj in cnpjs:
-                    time.sleep(1)
+                    time.sleep(5)
                     dados = Basic.consultar_cnpj(cnpj)
                     if 'erro' not in dados:
                         resultados.append({

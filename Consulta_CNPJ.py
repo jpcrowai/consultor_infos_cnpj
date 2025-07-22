@@ -1,4 +1,4 @@
-
+from env import email_outlook, senha_outlook
 import requests
 import smtplib
 from email.message import EmailMessage
@@ -20,15 +20,14 @@ class Basic:
 
 
     def enviar_email_outlook(destinatario, assunto, corpo, nome_arquivo, arquivo_buffer=None):
-        remetente = "seu_email@outlook.com"
-        senha = "sua_senha_ou_senha_de_aplicativo"
+        remetente = email_outlook
+        senha = senha_outlook
 
         msg = EmailMessage()
         msg["Subject"] = assunto
         msg["From"] = remetente
         msg["To"] = destinatario
         msg.set_content(corpo)
-
 
         if arquivo_buffer:
             arquivo_buffer.seek(0)

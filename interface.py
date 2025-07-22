@@ -1,5 +1,5 @@
 import time
-
+from env import token
 from busca_city import *
 import streamlit as st
 from Consulta_CNPJ import Basic
@@ -17,7 +17,7 @@ def interface():
     ))
     cnpjs = []
     resultados = []
-    buffer = None  # buffer global para download
+    buffer = None
 
     if modo == "Upload de Excel":
         arquivo = st.file_uploader("Envie o arquivo .xlsx com uma coluna de CNPJs", type=["xlsx"])
@@ -31,8 +31,8 @@ def interface():
             cnpjs = [x.strip() for x in entrada.split(',')]
 
     elif modo == "Buscar por Cidade e UF":
-        cidade = st.text_input("🗺️ Cidade").lower()
-        uf = st.text_input("🔤 UF").upper()
+        cidade = st.text_input("Cidade").lower()
+        uf = st.text_input("UF").upper()
         email_destino = st.text_input("📧 E-mail para envio (opcional)")
 
         if st.button("🔎 Buscar e Consultar Empresas"):
@@ -40,7 +40,7 @@ def interface():
                 st.warning("Preencha cidade e UF corretamente.")
             else:
                 with st.spinner("Buscando empresas na cidade..."):
-                    api = BrasilIO("81fff96fede7bab1e3834669b35431f3faa3b647")
+                    api = BrasilIO(token)
                     empresas = api.get_empresas(cidade, uf)
 
                     if not empresas:
@@ -51,8 +51,6 @@ def interface():
                     cnpjs = df_cnpjs.iloc[:, 0].astype(str).tolist()
 
                     st.info(f"🔍 {len(cnpjs)} CNPJs encontrados. Iniciando consulta detalhada...")
-
-                    # Consulta detalhada com a API
                     with st.spinner("Consultando dados detalhados..."):
                         for cnpj in cnpjs:
                             time.sleep(1)

@@ -1,4 +1,6 @@
 import time
+from itertools import count
+
 from env import token
 from busca_city import *
 import streamlit as st
@@ -48,12 +50,18 @@ def interface():
 
                     df_cnpjs = pd.DataFrame(empresas)
                     cnpjs = df_cnpjs.iloc[:, 0].astype(str).tolist()
-
+                    progress_bar = st.progress(0)
+                    status_text = st.empty()
+                    count = 1
                     st.info(f"{len(cnpjs)} CNPJs encontrados. Iniciando consulta detalhada...")
                     with st.spinner("Consultando dados detalhados..."):
+
                         for cnpj in cnpjs:
-                            time.sleep(5)
+                            time.sleep(20)
                             dados = Basic.consultar_cnpj(cnpj)
+                            progress = int((count + 1) / len(cnpjs) * 100)
+                            progress_bar.progress(progress)
+                            status_text.text(f"Consultando {count + 1} de {len(cnpjs)} ({progress}%)")
                             if 'erro' not in dados:
                                 resultados.append({
                                     "CNPJ": cnpj,
@@ -82,11 +90,17 @@ def interface():
             if not cnpjs:
                 st.warning("Insira ao menos um CNPJ válido.")
                 return
-
+            progress_bar = st.progress(0)
+            status_text = st.empty()
+            count = 1
+            st.info(f"{len(cnpjs)} CNPJs encontrados. Iniciando consulta detalhada...")
             with st.spinner("Consultando..."):
                 for cnpj in cnpjs:
-                    time.sleep(5)
+                    time.sleep(20)
                     dados = Basic.consultar_cnpj(cnpj)
+                    progress = int((count + 1) / len(cnpjs) * 100)
+                    progress_bar.progress(progress)
+                    status_text.text(f"Consultando {i + 1} de {len(cnpjs)} ({progress}%)")
                     if 'erro' not in dados:
                         resultados.append({
                             "CNPJ": cnpj,

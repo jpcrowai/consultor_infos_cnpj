@@ -13,3 +13,5 @@ class Basic:
         except Exception as e:
             return {"erro": str(e)}
 
+dados = Basic.consultar_cnpj("16640104000109")
+print(dados)

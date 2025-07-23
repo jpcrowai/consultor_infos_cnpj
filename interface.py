@@ -52,16 +52,15 @@ def interface():
                     cnpjs = df_cnpjs.iloc[:, 0].astype(str).tolist()
                     progress_bar = st.progress(0)
                     status_text = st.empty()
-                    count = 1
                     st.info(f"{len(cnpjs)} CNPJs encontrados. Iniciando consulta detalhada...")
                     with st.spinner("Consultando dados detalhados..."):
 
-                        for cnpj in cnpjs:
+                        for i, cnpj in enumerate(cnpjs, start=1):
                             time.sleep(20)
                             dados = Basic.consultar_cnpj(cnpj)
-                            progress = int((count + 1) / len(cnpjs) * 100)
+                            progress = int(i / len(cnpjs) * 100)
                             progress_bar.progress(progress)
-                            status_text.text(f"Consultando {count + 1} de {len(cnpjs)} ({progress}%)")
+                            status_text.text(f"Consultando {i} de {len(cnpjs)} ({progress}%)")
                             if 'erro' not in dados:
                                 resultados.append({
                                     "CNPJ": cnpj,
@@ -70,6 +69,7 @@ def interface():
                                     "Abertura": dados.get("abertura", ""),
                                     "E-mail": dados.get("email", ""),
                                     "Telefone": dados.get("telefone", ""),
+                                    "Porte": dados.get("porte", ""),
                                     "Atividade Principal": dados.get("atividade_principal", [{}])[0].get("text", "")
                                 })
                             else:
@@ -92,15 +92,14 @@ def interface():
                 return
             progress_bar = st.progress(0)
             status_text = st.empty()
-            count = 1
             st.info(f"{len(cnpjs)} CNPJs encontrados. Iniciando consulta detalhada...")
             with st.spinner("Consultando..."):
-                for cnpj in cnpjs:
-                    time.sleep(20)
+                for i, cnpj in enumerate(cnpjs, start=1):
+                    time.sleep(1)
                     dados = Basic.consultar_cnpj(cnpj)
-                    progress = int((count + 1) / len(cnpjs) * 100)
+                    progress = int(i / len(cnpjs) * 100)
                     progress_bar.progress(progress)
-                    status_text.text(f"Consultando {count + 1} de {len(cnpjs)} ({progress}%)")
+                    status_text.text(f"Consultando {i} de {len(cnpjs)} ({progress}%)")
                     if 'erro' not in dados:
                         resultados.append({
                             "CNPJ": cnpj,
